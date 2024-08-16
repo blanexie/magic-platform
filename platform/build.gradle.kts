@@ -39,8 +39,8 @@ dependencies {
     implementation("cn.hutool:hutool-all")
 
     implementation("org.xerial:sqlite-jdbc")
-    implementation("com.baomidou:mybatis-plus-boot-starter")
-    implementation("org.mybatis:mybatis-typehandlers-jsr310")
+    //implementation("com.baomidou:mybatis-plus-boot-starter")
+    //implementation("org.mybatis:mybatis-typehandlers-jsr310")
     implementation("com.alibaba:fastjson")
 }
 
