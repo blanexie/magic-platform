@@ -46,9 +46,9 @@ tasks.register<Task>("buildApp") {
 tasks.register<Task>("buildFatjar") {
     description = "转移前端打包好的资源到fatjar对应的目录中"
     group = JavaBasePlugin.BUILD_NEEDED_TASK_NAME
-
     dependsOn("copyWebDist")
     dependsOn(":platform:build")
+
 }
 
 tasks.register<Task>("copyWebDist") {
