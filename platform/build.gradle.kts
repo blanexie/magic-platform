@@ -10,10 +10,10 @@ plugins {
 }
 
 group = "com.github.blanexie.magic.platform"
-version = "0.0.1"
+version = "0.0.1-SNAPSHOT"
 
 
-java.sourceCompatibility = JavaVersion.VERSION_17
+java.sourceCompatibility = JavaVersion.VERSION_21
 
 configurations {
     compileOnly {
@@ -63,7 +63,7 @@ dependencyManagement {
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "17"
+        jvmTarget = "21"
     }
 }
 

@@ -2,17 +2,20 @@ import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 
 plugins {
-    id("org.springframework.boot") version "2.5.0"
-    id("io.spring.dependency-management") version "1.0.11.RELEASE"
-    kotlin("jvm") version "1.6.21"
-    kotlin("plugin.spring") version "1.6.21"
-    id("org.jetbrains.kotlin.plugin.noarg") version "1.4.20"
+    id("org.springframework.boot") version "3.2.0"
+    id("io.spring.dependency-management") version "1.1.6"
+    kotlin("jvm") version "2.0.10"
+    kotlin("plugin.spring") version "2.0.0"
+    id("org.jetbrains.kotlin.plugin.noarg") version "2.0.10"
 }
 
 repositories {
     mavenLocal()
     maven {
         setUrl("https://maven.aliyun.com/nexus/content/groups/public/")
+        setUrl("https://mirrors.163.com/maven/repository/maven-public/")
+        setUrl("https://repo.huaweicloud.com/repository/maven/")
+        setUrl("https://mirrors.cloud.tencent.com/nexus/repository/maven-public/")
     }
     mavenCentral()
 }
@@ -28,7 +31,7 @@ subprojects {
     }
 }
 
-java.sourceCompatibility = JavaVersion.VERSION_17
+java.sourceCompatibility = JavaVersion.VERSION_21
 
 tasks.register<Task>("buildApp") {
     description = "前后端一起打包的Task"
