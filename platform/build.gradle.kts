@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id("java")
     id("kotlin")
@@ -56,14 +58,13 @@ dependencyManagement {
         dependency("com.baomidou:mybatis-plus-boot-starter:3.5.0")
         dependency("org.mybatis:mybatis-typehandlers-jsr310:1.0.2")
         dependency("com.alibaba:fastjson:2.0.23")
-
     }
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "21"
+    compilerOptions {
+        freeCompilerArgs.add("-Xjsr305=strict")
+        jvmTarget.set(JvmTarget.JVM_21)
     }
 }
 

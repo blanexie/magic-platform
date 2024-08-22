@@ -39,7 +39,7 @@ tasks.register<Task>("buildApp") {
 
     dependsOn("buildFatjar")
     doLast {
-        val destinationDir = rootProject.buildDir
+        val destinationDir = rootProject.file("/build/")
         val from = rootProject.file("platform/build/libs/")
         moveFolderContents(from, destinationDir)
 
@@ -50,7 +50,8 @@ tasks.register<Task>("buildFatjar") {
     description = "转移前端打包好的资源到fatjar对应的目录中"
     group = JavaBasePlugin.BUILD_NEEDED_TASK_NAME
     dependsOn("copyWebDist")
-    dependsOn(":platform:build")
+
+    dependsOn(":platform:assemble")
 
 }
 
@@ -66,10 +67,11 @@ tasks.register<Task>("copyWebDist") {
     }
 }
 
-
-
-
 fun moveFolderContents(source: File, destination: File) {
+    if (destination.isDirectory && !destination.exists()) {
+        destination.mkdirs()
+    }
+    destination.mkdirs()
     source.listFiles()?.forEach { file ->
         if (file.isDirectory) {
             println("copying dir $file to $destination")
