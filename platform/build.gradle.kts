@@ -38,12 +38,15 @@ dependencies {
     implementation("us.codecraft:webmagic-extension")
     implementation("us.codecraft:webmagic-saxon")
 
+    implementation("com.alibaba:fastjson")
     implementation("cn.hutool:hutool-all")
 
     implementation("org.xerial:sqlite-jdbc")
-    //implementation("com.baomidou:mybatis-plus-boot-starter")
-    //implementation("org.mybatis:mybatis-typehandlers-jsr310")
-    implementation("com.alibaba:fastjson")
+    implementation("com.baomidou:mybatis-plus-boot-starter")
+    implementation("org.mybatis:mybatis-typehandlers-jsr310")
+
+    compileOnly("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok")
 }
 
 dependencyManagement {
@@ -52,8 +55,8 @@ dependencyManagement {
         dependency("us.codecraft:webmagic-extension:1.0.0")
         dependency("us.codecraft:webmagic-saxon:1.0.0")
         dependency("cn.hutool:hutool-all:5.8.31")
+        dependency("org.projectlombok:lombok:1.18.34")
 
-        //模块需要其他第三方库, 在这里写
         dependency("org.xerial:sqlite-jdbc:3.21.0.1")
         dependency("com.baomidou:mybatis-plus-boot-starter:3.5.0")
         dependency("org.mybatis:mybatis-typehandlers-jsr310:1.0.2")
