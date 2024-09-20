@@ -2,29 +2,28 @@ package com.github.blanexie.tserver.controller
 
 import cn.hutool.core.convert.Convert
 import cn.hutool.core.util.URLUtil
+import com.github.blanexie.magic.files.config.FileProperties
 import com.github.blanexie.magic.files.service.FileService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import java.nio.file.Path
-import kotlin.io.path.Path
 import kotlin.io.path.exists
 
 @Controller
 @RequestMapping("/files")
 class FileController(
         val fileService: FileService,
-        @Value("\${file.home}")
-        val home: String,
+        val fileProperties: FileProperties
 ) {
 
     @GetMapping("/**")
     fun path(request: HttpServletRequest, response: HttpServletResponse) {
         //获取用户请求的文件
-        val path = Path("$home/${URLUtil.decode(request.requestURI ?: "")}").normalize()
+        val homePath = fileProperties.getHomePath()
+        val path = homePath.resolve(URLUtil.decode(request.requestURI ?: ""))
         //校验用户请求的文件
         if (!checkFile(path, response)) {
             return
@@ -51,7 +50,7 @@ class FileController(
             return false
         }
 
-        if (!path.startsWith(Path(home))) {
+        if (!path.startsWith(fileProperties.getHomePath())) {
             response.status = HttpServletResponse.SC_FORBIDDEN
             response.flushBuffer()
             return false

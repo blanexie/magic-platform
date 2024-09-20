@@ -2,6 +2,8 @@ package com.github.blanexie.magic.files.config
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.stereotype.Component
+import java.nio.file.Path
+import kotlin.io.path.Path
 
 /**
  *
@@ -11,6 +13,12 @@ import org.springframework.stereotype.Component
 @Component
 @ConfigurationProperties(prefix = "files")
 class FileProperties {
+
+    var rangeSize: Long = 1048576
     var home: String? = null
-    var rangeSize: Long? = null
+
+    fun getHomePath(): Path {
+        return Path(home!!)
+    }
+
 }

@@ -6,26 +6,26 @@ import cn.hutool.core.convert.Convert
 import cn.hutool.core.io.FileUtil
 import cn.hutool.core.util.StrUtil
 import cn.hutool.core.util.URLUtil
+import com.github.blanexie.magic.files.config.FileProperties
 import com.github.blanexie.magic.files.util.ContentTypeUtil
 import com.github.blanexie.magic.files.util.Range
 import jakarta.servlet.http.HttpServletResponse.SC_OK
 import jakarta.servlet.http.HttpServletResponse.SC_PARTIAL_CONTENT
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.io.File
 import java.io.RandomAccessFile
 import java.nio.file.Path
-import kotlin.io.path.*
+import kotlin.io.path.extension
+import kotlin.io.path.isDirectory
+import kotlin.io.path.listDirectoryEntries
+import kotlin.io.path.name
 
 
 @Service
 class FileService(
-        @Value("\${file.range.size}")
-        val rangeSize: Long,
-        @Value("\${file.home}")
-        val home: String,
+        val fileProperties: FileProperties
 ) {
 
     final val log: Logger = LoggerFactory.getLogger(FileService::class.java)
@@ -61,7 +61,7 @@ class FileService(
      * 读取目录的内容
      */
     private fun readDirBytes(path: Path): ByteArray {
-        val home = Path(home)
+        val home = fileProperties.getHomePath()
         //遍历该目录的所有子集,逐个拼接li标签， 最后连接所有的标签
         val dirs = path.listDirectoryEntries().map {
             val href = it.subpath(home.nameCount, it.nameCount).toList().joinToString(separator = "/") { p ->
@@ -103,7 +103,7 @@ class FileService(
     }
 
     private fun buildNotRangeResult(total: Long, headers: MutableMap<String, Any>, file: File): Range {
-        return if (total > rangeSize) {
+        return if (total > fileProperties.rangeSize) {
             headers["Accept-Ranges"] = "bytes"
             Range(SC_OK, headers, null)
         } else {
@@ -126,11 +126,11 @@ class FileService(
         val byteRanges = range.replace("bytes=", "").split(",").first()
                 .split("-").mapNotNull { Convert.toLong(it) }
         val start = byteRanges.getOrElse(0) { 0L }
-        var end = byteRanges.getOrElse(1) { if (total > rangeSize) start + rangeSize else total - 1 }
+        var end = byteRanges.getOrElse(1) { if (total > fileProperties.rangeSize) start + fileProperties.rangeSize else total - 1 }
         //检查客户端请求的范围，超出了块大小， 修改下end值，限制在rangeSize范围内
         val reqRangeSize = end - start + 1
-        if (reqRangeSize > rangeSize) {
-            end = start + rangeSize
+        if (reqRangeSize > fileProperties.rangeSize) {
+            end = start + fileProperties.rangeSize
         }
         return Pair(start, end)
     }
