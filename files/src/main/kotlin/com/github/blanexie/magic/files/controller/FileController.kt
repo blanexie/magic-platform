@@ -14,7 +14,7 @@ import kotlin.io.path.Path
 import kotlin.io.path.exists
 
 @Controller
-@RequestMapping("/file")
+@RequestMapping("/files")
 class FileController(
         val fileService: FileService,
         @Value("\${file.home}")
