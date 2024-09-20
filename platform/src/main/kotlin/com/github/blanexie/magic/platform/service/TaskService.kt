@@ -1,7 +1,6 @@
 package com.github.blanexie.magic.platform.service
 
-import com.baomidou.mybatisplus.extension.service.IService
-import com.github.blanexie.magic.platform.entity.Spider
+import com.github.blanexie.magic.platform.entity.Task
 
 
 /**
@@ -9,9 +8,9 @@ import com.github.blanexie.magic.platform.entity.Spider
  * @author xiezc
  * @date 2024/8/26 19:49
  */
-interface SpiderService : IService<Spider> {
+interface TaskService {
 
-    fun addTask(spider: Spider)
+    fun addTask(task: Task)
 
     fun startTask(taskId: Int)
 
@@ -21,6 +20,6 @@ interface SpiderService : IService<Spider> {
     //取消
     fun cancelTask(taskId: Int)
 
-
+    fun findSpiders(status: Int): List<Task>
 
 }

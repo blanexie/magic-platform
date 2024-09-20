@@ -1,4 +1,4 @@
-package com.github.blanexie.magic.platform.common
+package com.github.blanexie.magic.platform.common.magic
 
 import com.alibaba.fastjson.JSON
 import com.github.blanexie.magic.platform.entity.Result
@@ -35,7 +35,6 @@ class MagicPagePipeline(
             //不予保存结果的页面
             log.info("不予保存结果的页面 schedulerId:{} url:{} ", schedulerId, requestUrl)
         }
-
         //修改scheduler的状态
         schedulerService.updateFetchCount(fetchCount, schedulerId)
     }

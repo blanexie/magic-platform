@@ -1,7 +1,7 @@
-package com.github.blanexie.magic.platform.common
+package com.github.blanexie.magic.platform.common.magic
 
 import cn.hutool.core.convert.Convert
-import com.github.blanexie.magic.platform.entity.Spider
+import com.github.blanexie.magic.platform.entity.Task
 import us.codecraft.webmagic.Page
 import us.codecraft.webmagic.Request
 import us.codecraft.webmagic.Site
@@ -14,13 +14,13 @@ import us.codecraft.webmagic.processor.PageProcessor
  * @author xiezc
  * @date 2024/8/29 17:21
  */
-class MagicPageProcessor(val spider: Spider) : PageProcessor {
+class MagicPageProcessor(val task: Task) : PageProcessor {
 
     private val site: Site
 
     init {
-        val retryTimes = Convert.toInt(spider.other["retryTimes"])
-        val sleepTime = Convert.toInt(spider.other["sleepTime"])
+        val retryTimes = Convert.toInt(task.other["retryTimes"])
+        val sleepTime = Convert.toInt(task.other["sleepTime"])
         site = Site.me().setRetryTimes(retryTimes).setSleepTime(sleepTime).setUseGzip(true)
     }
 
@@ -34,18 +34,17 @@ class MagicPageProcessor(val spider: Spider) : PageProcessor {
         val extractResult = page.request.getExtra<Boolean>("extractResult")
         page.resultItems.put("extractResult", extractResult)
         page.resultItems.put("requestUrl", page.request.url)
-        page.resultItems.put("fetchCount", spider.fetchCount)
+        page.resultItems.put("fetchCount", task.fetchCount)
 
-
-        for (extractRule in spider.helpUrls) {
+        for (extractRule in task.helpUrls) {
             extractedResult(extractRule, page, false)
         }
 
-        for (extractRule in spider.targetUrls) {
+        for (extractRule in task.targetUrls) {
             extractedResult(extractRule, page, true)
         }
 
-        for (extractRule in spider.extracts) {
+        for (extractRule in task.extracts) {
             if (extractRule.isMulti) {
                 val results = page.html.selectDocumentForList(extractRule.selector)
                 if (extractRule.isNotNull && results.size == 0) {

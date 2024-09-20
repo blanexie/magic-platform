@@ -1,6 +1,6 @@
 package com.github.blanexie.magic.platform.entity
 
-import com.baomidou.mybatisplus.annotation.*
+import jakarta.persistence.*
 import java.time.LocalDateTime
 
 
@@ -9,9 +9,11 @@ import java.time.LocalDateTime
  * @author xiezc
  * @date 2024/8/26 19:23
  */
-@TableName("schedules")
+@Entity
+@Table
 data class Scheduler(
-        @TableId(type = IdType.AUTO)
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         var id: Int?,
         var spiderId: Int,      //关联的任务的id
         var url: String,
@@ -20,8 +22,6 @@ data class Scheduler(
         var fetchCount: Int,      //被抓取次数， 定时任务 这个值会往上递增
 
         var extractResult: Boolean, //是否已经提取结果
-        @TableField(fill = FieldFill.INSERT_UPDATE)
         var updateTime: LocalDateTime,
-        @TableField(fill = FieldFill.INSERT)
         var createTime: LocalDateTime,
 )

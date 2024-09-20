@@ -1,6 +1,5 @@
 package com.github.blanexie.magic.platform.service
 
-import com.baomidou.mybatisplus.extension.service.IService
 import com.github.blanexie.magic.platform.entity.Scheduler
 
 
@@ -9,7 +8,7 @@ import com.github.blanexie.magic.platform.entity.Scheduler
  * @author xiezc
  * @date 2024/8/28 14:42
  */
-interface SchedulerService : IService<Scheduler> {
+interface SchedulerService {
 
     fun findByFetchCount(fetchCount: Int, startId: Int, spiderId: Int, size: Int): MutableList<Scheduler>
 
@@ -17,7 +16,8 @@ interface SchedulerService : IService<Scheduler> {
 
     fun findCount(spiderId: Int): Int
 
-
     fun updateFetchCount(fetchCount: Int, schedulerId: Int)
+
+    fun save(scheduler: Scheduler)
 
 }

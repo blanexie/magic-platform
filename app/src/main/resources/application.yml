@@ -1,0 +1,17 @@
+# Tomcat
+server:
+  port: 8899
+
+spring:
+  profiles:
+    active: dev
+  datasource:
+    driver-class-name: org.sqlite.JDBC
+    url: jdbc:sqlite:sqlite.db
+  jpa:
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+
