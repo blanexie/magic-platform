@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RestController
  * @date 2024/8/30 19:03
  */
 @RestController
-@RequestMapping("spider")
+@RequestMapping("task")
 class TaskController(
         val taskService: TaskService
 ) {
 
     @GetMapping("findAll")
     fun findAll(): WebResult {
-        val spiders = taskService.findSpiders(0)
+        val spiders = taskService.findTask(0)
         return WebResult.success(spiders)
     }
 

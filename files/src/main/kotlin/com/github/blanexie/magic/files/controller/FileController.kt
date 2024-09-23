@@ -1,29 +1,32 @@
-package com.github.blanexie.tserver.controller
+package com.github.blanexie.magic.files.controller
 
 import cn.hutool.core.convert.Convert
-import cn.hutool.core.util.URLUtil
 import com.github.blanexie.magic.files.config.FileProperties
 import com.github.blanexie.magic.files.service.FileService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import java.nio.file.Path
+import kotlin.io.path.Path
 import kotlin.io.path.exists
 
 @Controller
-@RequestMapping("/files")
+@RequestMapping("files")
 class FileController(
         val fileService: FileService,
         val fileProperties: FileProperties
 ) {
 
+    private val log = LoggerFactory.getLogger(FileController::class.java)
+
     @GetMapping("/**")
     fun path(request: HttpServletRequest, response: HttpServletResponse) {
+        val requestURI = request.requestURI.replace("/files", "")
         //获取用户请求的文件
-        val homePath = fileProperties.getHomePath()
-        val path = homePath.resolve(URLUtil.decode(request.requestURI ?: ""))
+        val path = Path("${fileProperties.home}/${requestURI}").normalize()
         //校验用户请求的文件
         if (!checkFile(path, response)) {
             return
@@ -34,6 +37,7 @@ class FileController(
         result.headers.forEach { response.setHeader(it.key, Convert.toStr(it.value)) }
         result.status.let { response.status = it }
         result.bytes?.let { response.outputStream.write(it) }
+        log.info("分块下载完成， range:${result.headers["Content-Range"]}")
         response.flushBuffer()
     }
 
@@ -49,8 +53,8 @@ class FileController(
             response.flushBuffer()
             return false
         }
-
-        if (!path.startsWith(fileProperties.getHomePath())) {
+        val homePath = fileProperties.getHomePath()
+        if (!path.startsWith(homePath)) {
             response.status = HttpServletResponse.SC_FORBIDDEN
             response.flushBuffer()
             return false

@@ -12,12 +12,6 @@ plugins {
 
 repositories {
     mavenLocal()
-    maven {
-        setUrl("https://maven.aliyun.com/nexus/content/groups/public/")
-        setUrl("https://mirrors.163.com/maven/repository/maven-public/")
-        setUrl("https://repo.huaweicloud.com/repository/maven/")
-        setUrl("https://mirrors.cloud.tencent.com/nexus/repository/maven-public/")
-    }
     mavenCentral()
 }
 
@@ -33,12 +27,6 @@ subprojects {
 
     repositories {
         mavenLocal()
-        maven {
-            setUrl("https://maven.aliyun.com/nexus/content/groups/public/")
-            setUrl("https://mirrors.163.com/maven/repository/maven-public/")
-            setUrl("https://repo.huaweicloud.com/repository/maven/")
-            setUrl("https://mirrors.cloud.tencent.com/nexus/repository/maven-public/")
-        }
         mavenCentral()
     }
 
@@ -74,40 +62,6 @@ subprojects {
     }
 }
 
-
-tasks.register<Task>("buildApp") {
-    description = "前后端一起打包的Task"
-    group = JavaBasePlugin.BUILD_TASK_NAME
-
-    dependsOn("buildFatjar")
-    doLast {
-        val destinationDir = rootProject.file("/build/")
-        val from = rootProject.file("platform/build/libs/")
-        moveFolderContents(from, destinationDir)
-
-    }
-}
-
-tasks.register<Task>("buildFatjar") {
-    description = "转移前端打包好的资源到fatjar对应的目录中"
-    group = JavaBasePlugin.BUILD_NEEDED_TASK_NAME
-    dependsOn("copyWebDist")
-
-    dependsOn(":platform:assemble")
-
-}
-
-tasks.register<Task>("copyWebDist") {
-    description = "转移前端打包好的资源到fatjar对应的目录中"
-    group = JavaBasePlugin.BUILD_NEEDED_TASK_NAME
-
-    dependsOn(":web:buildWebApp")
-    doLast {
-        val destinationDir = rootProject.file("platform/build/resources/main/static")
-        val from = rootProject.file("web/dist")
-        moveFolderContents(from, destinationDir)
-    }
-}
 
 fun moveFolderContents(source: File, destination: File) {
     if (destination.isDirectory && !destination.exists()) {

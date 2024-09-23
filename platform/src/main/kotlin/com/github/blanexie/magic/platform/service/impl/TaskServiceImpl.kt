@@ -57,7 +57,7 @@ class TaskServiceImpl(
         }
     }
 
-    override fun findSpiders(status: Int): List<Task> {
+    override fun findTask(status: Int): List<Task> {
         return taskRepository.findByStatus(status)
     }
 

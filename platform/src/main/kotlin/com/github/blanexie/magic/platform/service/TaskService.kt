@@ -20,6 +20,6 @@ interface TaskService {
     //取消
     fun cancelTask(taskId: Int)
 
-    fun findSpiders(status: Int): List<Task>
+    fun findTask(status: Int): List<Task>
 
 }
