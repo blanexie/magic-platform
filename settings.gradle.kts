@@ -1,7 +1,9 @@
 rootProject.name = "magic"
 
-include(":common")
-include(":platform")
-include(":web")
+
+include(":api")
+include(":infra")
 include(":app")
-include(":files")
+include(":web")
+include(":service:files")
+include(":service:platform")

@@ -1,20 +1,11 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
-
-group = "com.github.blanexie.magic.app"
+group = "com.github.blanexie.magic.service.files"
 version = "0.0.1-SNAPSHOT"
 
-configurations {
-    compileOnly {
-        extendsFrom(configurations.annotationProcessor.get())
-    }
-}
-
 dependencies {
-    implementation(project(":service:platform"))
-    implementation(project(":service:files"))
+    implementation(project(":api"))
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-actuator")
 
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")

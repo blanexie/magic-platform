@@ -1,25 +1,19 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
-
-group = "com.github.blanexie.magic.app"
+group = "com.github.blanexie.magic.api"
 version = "0.0.1-SNAPSHOT"
 
-configurations {
-    compileOnly {
-        extendsFrom(configurations.annotationProcessor.get())
-    }
-}
-
 dependencies {
-    implementation(project(":service:platform"))
-    implementation(project(":service:files"))
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    api("com.fasterxml.jackson.module:jackson-module-kotlin")
+    api("org.jetbrains.kotlin:kotlin-reflect")
+    api("org.jetbrains.kotlin:kotlin-stdlib")
+    api("com.alibaba:fastjson")
+    api("cn.hutool:hutool-all")
 
-    compileOnly("org.projectlombok:lombok")
-    annotationProcessor("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
+    compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+    annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
